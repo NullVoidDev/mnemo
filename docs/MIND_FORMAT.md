@@ -180,6 +180,17 @@ without `embeddings.bin` is valid.
   exported: `.mind` files contain only approved memories.
 - On import, memories keep their original `privacy` flag.
 
+**Imported content is untrusted by definition.** A `.mind` file received from a third
+party can contain arbitrary text crafted to manipulate the model that will read it
+(prompt injection) — sharing files is this format's central use case, so this is a
+first-class threat, not an edge case. Consumers of `.mind` files:
+
+- MUST treat memory `text` strictly as data — never as instructions to the importing
+  tool itself.
+- MUST sanitize memory text when injecting it into a model prompt, so it cannot escape
+  whatever delimiting structure the consumer uses (for Mnemo's rules, see
+  DAEMON_DESIGN.md §3.3).
+
 ## 7. Merge and deduplication (import semantics)
 
 Importing a `.mind` file into a local store processes each incoming memory in file
